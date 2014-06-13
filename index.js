@@ -36,7 +36,7 @@ app.get('/:user/:presentation', function(req, res) {
     $(content).find("div.slide_container div.slide").each(function(i, page){
       var pageNo = $(page).attr('data-index');
       var imgEle = $($(page).find('img.slide_image')[0]);
-      var images = [imgEle.attr('data-normal'),imgEle.attr('data-full')];
+      var images = {"normal": imgEle.attr('data-normal'), "full": imgEle.attr('data-full')};
       var page = {"no": pageNo, "images": images};
       pages.push(page);
     });

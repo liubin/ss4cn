@@ -11,6 +11,7 @@
     var pages = JSON.parse('<%- pages %>');
     var index;
     var totalPages;
+    var viewFullImg = false;
 
     function prev() {
       if(index == 1){
@@ -32,18 +33,30 @@
     }
 
     function reloadImage(){
-      $("#img").attr('src', pages[index -1].images[0]);
+      if (viewFullImg){
+        $("#img").attr('src', pages[index -1].images.full);
+      }else{
+        $("#img").attr('src', pages[index -1].images.normal);
+      }
       $("#page_index").html('Page: ' + index);
     }
+
+    function changeImgSize(){
+      viewFullImg = $("#view_large").prop('checked');
+      reloadImage();
+    }
+    // document inited.
     $(function(){
       totalPages = pages.length;
       index = 1;
       $(".prev").on('click',prev);
       $(".next").on('click',next);
+      $("#view_large").on('click', changeImgSize);
       reloadImage();
     });
     </script>
     <div style="height:40px;">
+      <span>View Large Image: <input type="checkbox" id="view_large"/></span>
       <span><a class="prev" href="#">Prev</a></span>
       <span id="page_index"></span>
       <span><a class="next" href="#">Next</a></span>
