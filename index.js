@@ -21,7 +21,7 @@ app.use(function(err, req, res, next){
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
-app.get('/www.slideshare.net/:user/:presentation', function(req, res) {
+app.get('/:user/:presentation', function(req, res) {
   url = "http://www.slideshare.net/" + req.params.user
                                       + "/" + req.params.presentation;
 
