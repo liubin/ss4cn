@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/liubin0329/ss4cn",
   "dependencies": {
-    "express": "^4.4.3"
+    "express": "^4.4.3",
+    "ejs": "^1.0.0",
+    "body-parser": "^1.3.1"
   }
 }
