@@ -2,11 +2,55 @@
   <head >
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>ssss</title>
+    <title><%= title %></title>
     <meta name="viewport" content="width=1024">
   </head>
   <body>
     <script type="text/javascript" src="/jquery-2.1.1.min.js"></script>
-    hehe 2 <%= title %>
+    <script type="text/javascript">
+    var pages = JSON.parse('<%- pages %>');
+    var index;
+    var totalPages;
+
+    function prev() {
+      if(index == 1){
+        alert('First Page');
+        return;
+      }
+      index--;
+      reloadImage();
+    }
+
+    function next() {
+      if(index == totalPages){
+        alert('Last Page');
+        return;
+      }
+      index++;
+      reloadImage();
+
+    }
+
+    function reloadImage(){
+      $("#img").attr('src', pages[index -1].images[0]);
+      $("#page_index").html('Page: ' + index);
+    }
+    $(function(){
+      totalPages = pages.length;
+      index = 1;
+      $(".prev").on('click',prev);
+      $(".next").on('click',next);
+      reloadImage();
+    });
+    </script>
+    <div style="height:40px;">
+      <span><a class="prev" href="#">Prev</a></span>
+      <span id="page_index"></span>
+      <span><a class="next" href="#">Next</a></span>
+    </div>
+    <div>
+      <img id="img"/>
+    </div>
+
   </body>
 </html>

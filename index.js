@@ -3,6 +3,10 @@ var app = express();
 var ejs = require('ejs');
 var bodyParser = require('body-parser')
 
+var cheerio = require('cheerio');
+
+var myHttpGetter = require('./MyHttpGetter.js');
+
 app.set('views', __dirname + '/views');
 app.engine('.html', ejs.__express);
 app.set('view engine', 'html');
@@ -21,8 +25,34 @@ app.get('/www.slideshare.net/:user/:presentation', function(req, res) {
   url = "http://www.slideshare.net/" + req.params.user
                                       + "/" + req.params.presentation;
 
-  res.render('index', {
-    title: url
+  // test ok.
+  // url="http://127.0.0.1:5000/test";
+
+  myHttpGetter.get(url,function(content,status){
+    console.log("status:= " + status);
+
+    $ = cheerio.load(content);
+    var pages = [];
+    $(content).find("div.slide_container div.slide").each(function(i, page){
+      var pageNo = $(page).attr('data-index');
+      var imgEle = $($(page).find('img.slide_image')[0]);
+      var images = [imgEle.attr('data-normal'),imgEle.attr('data-full')];
+      var page = {"no": pageNo, "images": images};
+      pages.push(page);
+    });
+    res.render('index', {
+      title: url,
+      pages: JSON.stringify(pages)
+    });
+    console.log(pages);
+  });
+
+
+});
+
+app.get('/test', function(req, res) {
+  res.render('test', {
+    title: 'test'
   });
 });
 
