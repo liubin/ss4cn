@@ -171,7 +171,10 @@ var download = function(title, pages, res, localFileName){
       });
     }, function(err) {
       // all done
-      console.log(err);
+      if(err != undefined){
+        console.log("ERROR: " + err);
+        return;
+      }
       console.log('doc.end');
       doc.end();
       if(openInBrowser == false){
