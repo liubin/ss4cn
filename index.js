@@ -48,9 +48,6 @@ var cronDelete = function(){
       // TODO: make it a const
       var maxAge = 7 * 24 * 60 * 60 * 1000;
 
-      // five minutes for test
-      maxAge = 5 * 60 * 1000;
-
       var age = now - accessTime;
 
       if(age > maxAge){
