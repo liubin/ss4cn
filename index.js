@@ -95,6 +95,10 @@ var getSlide = function(content){
   return {pages: pages, title: title};
 };
 
+app.get('/', function(req, res){
+  res.render('index');
+});
+
 app.get('/:user/:presentation', function(req, res) {
   url = "http://www.slideshare.net/" + req.params.user
                                       + "/" + req.params.presentation;
@@ -108,7 +112,7 @@ app.get('/:user/:presentation', function(req, res) {
     var title = slide.title
 
     doc = new PDFDocument
-    res.render('index', {
+    res.render('preview', {
       title: title,
       path: path,
       pages: JSON.stringify(pages)
@@ -122,6 +126,9 @@ app.get('/:user/:presentation', function(req, res) {
 // otherwise(openInBrowser), ignore it
 // localFileName: localFileName if use download method(not openInBrowser)
 var download = function(title, pages, res, localFileName){
+
+    // TODO: should run as a cron job
+    cronDelete();
 
     var openInBrowser = false;
 
@@ -155,7 +162,7 @@ var download = function(title, pages, res, localFileName){
     var current = 0;
 
     async.eachSeries(pages, function(page, next) {
-      var url = page.images.normal;
+      var url = page.images.full;
       console.log("async.run: " + url)
       request2(url, function(err, response, buffer) {
         console.log('download ok: ' + url);
@@ -201,8 +208,15 @@ app.get('/:user/:presentation/download', function(req, res) {
 
 });
 
+var program = require('commander');
 
-var port = Number(process.env.PORT || 5000);
+program
+  .version('0.0.1')
+  .option('-p, --port <n>', 'Listening port', parseInt).parse(process.argv);
+
+// get listen port from command line
+var port = program.port == undefined ? 5000: program.port;
+
 app.listen(port, function() {
   console.log("Listening on " + port);
 });

@@ -2,69 +2,62 @@
   <head >
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title><%= title %></title>
+    <title>slide for you</title>
     <meta name="viewport" content="width=1024">
   </head>
   <body>
     <script type="text/javascript" src="/jquery-2.1.1.min.js"></script>
     <script type="text/javascript">
-    var pages = JSON.parse('<%- pages %>');
-    var index;
-    var totalPages;
-    var viewFullImg = false;
+        $(function(){
 
-    function prev() {
-      if(index == 1){
-        alert('First Page');
-        return;
-      }
-      index--;
-      reloadImage();
-    }
+            $("#go").on('click', function(){
+                var elm = document.createElement('a');
+                elm.href = $("#where2go").val();
+                if(elm.hostname == 'www.slideshare.net'
+                  || elm.hostname == 'slideshare.net'){
+                    window.location = elm.pathname;
+                }
+            });
 
-    function next() {
-      if(index == totalPages){
-        alert('Last Page');
-        return;
-      }
-      index++;
-      reloadImage();
-
-    }
-
-    function reloadImage(){
-      if (viewFullImg){
-        $("#img").attr('src', pages[index -1].images.full);
-      }else{
-        $("#img").attr('src', pages[index -1].images.normal);
-      }
-      $("#page_index").html('Page: ' + index + "/" + totalPages);
-    }
-
-    function changeImgSize(){
-      viewFullImg = $("#view_large").prop('checked');
-      reloadImage();
-    }
-    // document inited.
-    $(function(){
-      totalPages = pages.length;
-      index = 1;
-      $(".prev").on('click',prev);
-      $(".next").on('click',next);
-      $("#view_large").on('click', changeImgSize);
-      reloadImage();
-    });
+        });
     </script>
-    <div style="height:40px;">
-      <span><a href="<%= path %>/download" target="_blank">Download</a></span>
-      <span>View Large Image: <input type="checkbox" id="view_large"/></span>
-      <span><a class="prev" href="#">Prev</a></span>
-      <span id="page_index"></span>
-      <span><a class="next" href="#">Next</a></span>
-    </div>
-    <div>
-      <img id="img"/>
-    </div>
 
-  </body>
-</html>
+<style type="text/css">
+.table {
+  display: table;
+  height: 100%;
+  margin: 0 auto;
+}
+.table-cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+.centered {
+    font-size: 24px;
+}
+input {
+    height: 40px;
+}
+button {
+    height: 40px;
+    font-size: 30px;
+    color: blue;
+}
+
+</style>
+
+
+<div class="table">
+    <div class="table-cell">
+        <div class="centered">
+            please input presention's url:<br>
+
+            <input type="text" id="where2go" placeholder='paste your slideshare url here' size=150>
+            <br>
+            <button id='go'>View</button>
+        </div>
+    </div>
+</div>
+
+
+</body></html>
